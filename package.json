@@ -1,0 +1,101 @@
+{
+  "name": "@webship.co/workspace-flutter",
+  "version": "1.0.0",
+  "description": "Flutter for Webship Workspace: the builder (`cmd-flutter-project.sh`) in every sites folder, which builds a Flutter web app in a container of its own (the Flutter SDK, pinned, in the app's web image; DDEV by default, or Docker Compose with --runtime docker) and serves the built app, the Flutter step pack wired into the testing setup of such an app, and its AI items in their folders: two agents, a skill, a command and two prompts for building and testing Flutter web apps.",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "license": "ISC",
+  "engines": {
+    "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webship/workspace-flutter.git"
+  },
+  "files": [
+    "dist/src",
+    "ai",
+    "commands",
+    "features",
+    "scripts",
+    "testing",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "workspacePlugin": {
+    "name": "flutter",
+    "label": "Flutter",
+    "needs": [
+      [
+        "dev",
+        "test",
+        "sandboxes",
+        "demos"
+      ],
+      "ai-agents",
+      "ai-skills",
+      "ai-commands",
+      "ai-prompts"
+    ],
+    "commands": {
+      "types": [
+        "sites"
+      ],
+      "workspaces": [
+        "dev",
+        "test",
+        "sandboxes",
+        "demos"
+      ],
+      "files": [
+        "commands/cmd-flutter-project.sh"
+      ]
+    },
+    "scripts": {
+      "functions": [
+        "scripts/functions/fun-flutter.sh"
+      ],
+      "args": [
+        "scripts/args/arg-flutter.sh"
+      ],
+      "machine": [
+        "scripts/flutter-serve.py",
+        "testing/site.feature"
+      ]
+    },
+    "ai": {
+      "agents": [
+        "ai/agents/flutter-app-builder.md",
+        "ai/agents/flutter-tester.md"
+      ],
+      "skills": [
+        "ai/skills/flutter-scenarios"
+      ],
+      "commands": [
+        "ai/commands/flutter-test.md"
+      ],
+      "prompts": [
+        "ai/prompts/flutter-build-and-test.md",
+        "ai/prompts/flutter-scenarios-for-an-app.md"
+      ]
+    },
+    "features": [
+      "features/flutter.feature",
+      "features/flutter-runtimes.feature"
+    ],
+    "featuresSite": "cmd-flutter-project.sh ci-flutter --install --runtime docker"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@webship.co/workspace-plugin-api": "^1.0.13",
+    "typescript": "^5.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
